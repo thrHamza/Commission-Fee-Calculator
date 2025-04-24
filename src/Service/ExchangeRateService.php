@@ -77,4 +77,23 @@ class ExchangeRateService
 
         return new Money((string) $amountEur, 'EUR');
     }
+
+    /**
+     * Converts a EUR amount to target currency.
+     *
+     * @param float $amountEur Amount in EUR
+     * @param string $targetCurrency currency code
+     * @return Money
+     */
+    public function convertFromEur(float $amountEur, string $targetCurrency): Money
+    {
+        $targetCurrency = strtoupper($targetCurrency);
+
+        if (!isset($this->rates[$targetCurrency])) {
+            throw new \InvalidArgumentException("Unknown target currency: {$targetCurrency}");
+        }
+
+        $convertedAmount = $amountEur * $this->rates[$targetCurrency];
+        return new Money((string) $convertedAmount, $targetCurrency);
+    }
 }
