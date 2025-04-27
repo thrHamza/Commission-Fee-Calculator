@@ -16,12 +16,21 @@ class ExchangeRateService
     private array $rates = [];
 
     /**
+     * @var string
+     */
+    private string $apiUrl;
+
+
+    /**
      * ExchangeRateService constructor.
      *
+     * @param string $apiUrl The URL to fetch rates from
      * @param bool $autoFetch Whether to fetch rates on initialization
      */
-    public function __construct(bool $autoFetch = true)
+    public function __construct(string $apiUrl, bool $autoFetch = true)
     {
+        $this->apiUrl = $apiUrl;
+
         if ($autoFetch) {
             $this->fetchRates();
         }
@@ -38,7 +47,7 @@ class ExchangeRateService
 
         while ($retry-- > 0) {
             try {
-                $response = file_get_contents('https://developers.paysera.com/tasks/api/currency-exchange-rates');
+                $response = file_get_contents($this->apiUrl);
                 $data = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
 
 
@@ -95,5 +104,15 @@ class ExchangeRateService
 
         $convertedAmount = $amountEur * $this->rates[$targetCurrency];
         return new Money((string) $convertedAmount, $targetCurrency);
+    }
+
+    /**
+     * Overriding the rates manually.
+     *
+     * @param array<string,float> $rates
+     */
+    public function setRates(array $rates): void
+    {
+        $this->rates = $rates;
     }
 }

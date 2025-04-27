@@ -47,7 +47,7 @@ class CsvReader
         }
 
         try {
-            while (($row = fgetcsv($handle)) !== false) {
+            while (($row = fgetcsv($handle,0,',', '"','\\')) !== false) {
                 $this->validator->validate($row);
                 yield $this->createOperationFromRow($row);
             }
