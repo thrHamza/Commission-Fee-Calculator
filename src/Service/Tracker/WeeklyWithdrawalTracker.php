@@ -4,6 +4,15 @@ namespace App\Service\Tracker;
 
 /**
  * Tracks the number and total amount of weekly withdrawals per user.
+ *
+ *
+ *  Tracks per-user weekly withdrawals using composite keys:
+ *  {user_id}_{ISO_week_number} (ex. "4_2025-W17")
+ *
+ *  Storage structure:
+ *  [
+ *    "4_2025-W17" => ['count' => 2, 'total' => 500.00]
+ *  ]
  */
 class WeeklyWithdrawalTracker
 {

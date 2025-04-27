@@ -4,6 +4,15 @@ namespace App\Service;
 
 /**
  * Service responsible for rounding fee amounts based on currency rules.
+ *
+ *  Currency-specific rounding:
+ *  - JPY: Round up to whole numbers (0 decimals)
+ *  - Others: Round up to 2 decimal places
+ *
+ *  Uses mathematical ceiling with multiplier technique:
+ *  1. Multiply by 10^decimals
+ *  2. Apply ceil()
+ *  3. Divide back
  */
 class FeeRounder
 {

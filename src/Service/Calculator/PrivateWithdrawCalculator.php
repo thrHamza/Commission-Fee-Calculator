@@ -10,6 +10,14 @@ use App\Service\Tracker\WeeklyWithdrawalTracker;
 
 /**
  * Calculator for private user withdrawal operations.
+ *
+ *
+ * Handles the 1000 EUR/week free limit rule:
+ * - First 3 withdrawals free (amounts summed in EUR)
+ * - 0.3% fee on excess amounts
+ * - Week reset every Monday
+ *
+ * Currency conversion applied before limit checks.
  */
 class PrivateWithdrawCalculator implements FeeCalculatorInterface
 {
